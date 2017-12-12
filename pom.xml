@@ -35,7 +35,13 @@
   <version>2.11.0</version>
   <type>pom</type>
 </dependency>
-
+ <dependency>
+    <groupId>tagme</groupId>
+    <artifactId>it.acubelab.tagme</artifactId>
+    <version>1.0</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/src/main/resources/tagme.jar</systemPath>
+</dependency>
   <dependency>
   <groupId>com.robbypond</groupId>
   <artifactId>boilerpipe</artifactId>
