@@ -37,9 +37,11 @@ import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.souza.tagMeClient.TagmeAnnotator;
+
 import it.acubelab.tagme.AnnotatedText;
 import it.acubelab.tagme.Annotation;
 import it.acubelab.tagme.preprocessing.TopicSearcher;
+
 
 public final class JsonReader extends Configured implements Tool {
 	
