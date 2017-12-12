@@ -41,7 +41,6 @@ import it.acubelab.tagme.AnnotatedText;
 import it.acubelab.tagme.Annotation;
 import it.acubelab.tagme.preprocessing.TopicSearcher;
 
-
 public final class JsonReader extends Configured implements Tool {
 	
 	private static Configuration conf;
@@ -79,7 +78,7 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
     private static BoilerpipeExtractor extractor;
   
     private static String article;
-    private List<Annotation> listAnnotation;
+    private List<it.enricocandino.tagme4j.model.Annotation> listAnnotation;
     @Override
     protected void setup(Context context) throws IOException, InterruptedException 
     {
