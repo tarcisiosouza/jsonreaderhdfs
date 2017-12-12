@@ -11,6 +11,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -39,7 +40,13 @@ import de.l3s.souza.tagMeClient.TagmeAnnotator;
 
 import it.acubelab.tagme.AnnotatedText;
 import it.acubelab.tagme.Annotation;
-import it.acubelab.tagme.preprocessing.TopicSearcher;
+import it.acubelab.tagme.Disambiguator;
+import it.acubelab.tagme.RelatednessMeasure;
+import it.acubelab.tagme.RhoMeasure;
+import it.acubelab.tagme.Segmentation;
+import it.acubelab.tagme.TagmeParser;
+import it.acubelab.tagme.config.TagmeConfig;
+import it.acubelab.tagme.preprocessing.TopicSearcher; 
 
 public final class JsonReader extends Configured implements Tool {
 	
@@ -78,7 +85,7 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
     private static BoilerpipeExtractor extractor;
   
     private static String article;
-    private List<it.enricocandino.tagme4j.model.Annotation> listAnnotation;
+    private List<Annotation> listAnnotation;
     @Override
     protected void setup(Context context) throws IOException, InterruptedException 
     {
