@@ -36,13 +36,7 @@
   <version>2.11.0</version>
   <type>pom</type>
 </dependency>
- <dependency>
-    <groupId>tagme</groupId>
-    <artifactId>it.acubelab.tagme</artifactId>
-    <version>1.0</version>
-    <scope>system</scope>
-    <systemPath>${project.basedir}/src/main/resources/tagme.jar</systemPath>
-</dependency>
+
   <dependency>
   <groupId>com.robbypond</groupId>
   <artifactId>boilerpipe</artifactId>
@@ -80,6 +74,7 @@
 		<groupId>de.l3s.souza</groupId>
 		<artifactId>tagMeClient</artifactId>
 		<version>1.0-SNAPSHOT</version>
+		<scope>compile</scope>
 	</dependency> 
     <dependency> 
     <groupId>cngram</groupId> 
