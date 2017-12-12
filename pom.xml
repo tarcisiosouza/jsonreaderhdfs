@@ -68,6 +68,12 @@
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+		<groupId>de.l3s.souza</groupId>
+		<artifactId>tagMeClient</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<scope>compile</scope>
+	</dependency>
     <dependency> 
     <groupId>cngram</groupId> 
     <artifactId>cngram</artifactId> 

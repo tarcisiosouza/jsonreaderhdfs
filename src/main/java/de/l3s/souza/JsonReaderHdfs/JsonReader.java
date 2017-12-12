@@ -15,6 +15,7 @@ import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -35,12 +36,16 @@ import com.google.gson.JsonSerializer;
 import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
+import de.l3s.souza.tagMeClient.TagmeAnnotator;
 import it.enricocandino.tagme4j.TagMeException;
 import it.enricocandino.tagme4j.model.Annotation;
 
-public class JsonReader extends Configured implements Tool {
+
+public final class JsonReader extends Configured implements Tool {
 	
 	private static Configuration conf;
+	private static TagmeAnnotator annotation;
+	
 	 public static class RecordSerializer implements JsonSerializer<Record> {
 	        public JsonElement serialize(final Record record, final Type type, final JsonSerializationContext context) {
 	            JsonObject result = new JsonObject();
@@ -58,6 +63,14 @@ public class JsonReader extends Configured implements Tool {
 				return null;
 			}
 	    }
+	 
+
+protected void setup(Context context) throws IOException,
+		InterruptedException {
+	
+	annotation = new TagmeAnnotator ("en");
+
+	}
 public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text > { 
 	
 	
@@ -104,7 +117,7 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
         String encoded = new String(ptext, UTF_8); 
 		String entitiesDisambiguated = ""; 
        
-  /*      try {
+        try {
 			listAnnotation = annotation.annotate(encoded);
 		} catch (TagMeException e) {
 			
@@ -115,17 +128,17 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
         	if (a.getRho() >= 0.3)
         		entitiesDisambiguated = entitiesDisambiguated + "spot: " + a.getSpot() + " " + "title: " + a.getTitle() + "\n";
         }
-    */
+    
        
-      //  rec.setAnnotations(entitiesDisambiguated);
+        rec.setAnnotations(entitiesDisambiguated);
 		 article = article.replaceAll("\n", "");
 	     article = article.replaceAll("\t", "");
         rec.setArticle(article);
        
         Gson gsonOutput = new GsonBuilder().registerTypeAdapter(Record.class, new RecordSerializer())
                 .create();
-	//	context.write(outKey,new Text (rec.getOriginalUrl() + " " + rec.getArticle() + "\n" + rec.getAnnotations()));
-        context.write(outKey,new Text (rec.getTimestamp() + "\n" + rec.getArticle()));
+		context.write(outKey,new Text (rec.getOriginalUrl() +"\n" + rec.getAnnotations()));
+    //    context.write(outKey,new Text (rec.getTimestamp() + "\n" + rec.getArticle()));
 		
 		}
 	
