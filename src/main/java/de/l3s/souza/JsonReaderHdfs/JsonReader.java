@@ -52,6 +52,7 @@ public final class JsonReader extends Configured implements Tool {
 	
 	private static Configuration conf;
 	private static TagmeAnnotator annotation;
+
 	
 	 public static class RecordSerializer implements JsonSerializer<Record> {
 	        public JsonElement serialize(final Record record, final Type type, final JsonSerializationContext context) {
