@@ -37,9 +37,9 @@ import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.souza.tagMeClient.TagmeAnnotator;
-import it.enricocandino.tagme4j.TagMeException;
-import it.enricocandino.tagme4j.model.Annotation;
-
+import it.acubelab.tagme.AnnotatedText;
+import it.acubelab.tagme.Annotation;
+import it.acubelab.tagme.preprocessing.TopicSearcher;
 
 public final class JsonReader extends Configured implements Tool {
 	
@@ -76,18 +76,18 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
 	
     private final NullWritable outKey = NullWritable.get();
     private static BoilerpipeExtractor extractor;
-    private AnnotationTagMe annotation;
+  
     private static String article;
     private List<Annotation> listAnnotation;
     @Override
     protected void setup(Context context) throws IOException, InterruptedException 
     {
     	extractor = CommonExtractors.ARTICLE_EXTRACTOR;
-    	annotation = new AnnotationTagMe ();
+    	annotation = new TagmeAnnotator ("en");
     }
 	public void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
-
+		AnnotatedText ann_text = null;
 		String str = value.toString();
 		String[] str2 = str.split("},", -1);
 		String record = str2[0];
@@ -118,15 +118,17 @@ public static class SampleMapper extends Mapper<Object, Text, NullWritable, Text
 		String entitiesDisambiguated = ""; 
        
         try {
-			listAnnotation = annotation.annotate(encoded);
-		} catch (TagMeException e) {
+			listAnnotation = annotation.getAnnots();
+			ann_text = annotation.getAnn_text();
+			TopicSearcher searcher = annotation.getSearcher();
+		} catch (Exception e) {
 			
 		}
      
         for (Annotation a : listAnnotation)
         {
         	if (a.getRho() >= 0.3)
-        		entitiesDisambiguated = entitiesDisambiguated + "spot: " + a.getSpot() + " " + "title: " + a.getTitle() + "\n";
+        		entitiesDisambiguated = entitiesDisambiguated + "spot: " + ann_text.getOriginalText(a) + "\n";
         }
     
        
